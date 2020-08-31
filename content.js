@@ -79,7 +79,7 @@ const getBDMString = (popover) => {
     return popover.children[0].children[0].children[2].textContent.trim();
 }
 
-const handleClick = (phrase, element) => {
+const handleClick = (phrase) => {
     const query = phrase.selectionText;
 
     let firstName = '';
@@ -103,12 +103,12 @@ const handleClick = (phrase, element) => {
 
     console.log(firstName, middleNames, surname);
 
-    // const element = getHtmlElement(phrase.linkUrl);
     let bdSplit = '';
     let birthYear = '';
     let deathYear = '';
-    if (window.location.href.includes('search')) {
 
+    if (window.location.href.includes('search')) {
+        const element = getHtmlElement(phrase.linkUrl);
         const personPopoverElement = getPersonPopover(element);
         const birthDeathString = getBDMString(personPopoverElement);
         bdSplit = birthDeathString.split(' ');
