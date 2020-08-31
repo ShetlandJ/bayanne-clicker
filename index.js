@@ -59,6 +59,6 @@ const searchFG = (phrase, withBirthAndDeathDate = false) => {
 
 chrome.contextMenus.create({
     title: "Search Find A Grave",
-    contexts: ["selection"],  // ContextType
-    onclick: searchFG // A callback function
+    contexts: ["selection"],
+    onclick: searchFG
 });
