@@ -30,16 +30,15 @@ const getSurnameFirstNameParts = (name) => {
 }
 
 const getNormalNameParts = (name) => {
-    const splitName = name.split(', ');
+    const splitName = name.split(' ');
 
     const firstName = splitName[0];
+    const surname = splitName[splitName.length - 1];
 
     splitName.shift();
     splitName.pop();
 
     const middleNames = splitName.join(' ');
-
-    const surname = splitName[-1];
 
     return {
         firstName,
@@ -88,29 +87,42 @@ const handleClick = (phrase, element) => {
     let surname = '';
 
     if (window.location.href.includes('search')) {
-        let {
-            firstName,
-            middleNames,
-            surname
-        } = getSurnameFirstNameParts(query);
+        const name = getSurnameFirstNameParts(query);
+
+        firstName = name.firstName;
+        middleNames = name.middleNames;
+        surname = name.surname;
+
     } else {
-        let {
-            firstName,
-            middleNames,
-            surname
-        } = getNormalNameParts(query);
+        const name = getNormalNameParts(query);
+
+        firstName = name.firstName;
+        middleNames = name.middleNames;
+        surname = name.surname;
     }
 
     console.log(firstName, middleNames, surname);
 
-
     // const element = getHtmlElement(phrase.linkUrl);
-    const personPopoverElement = getPersonPopover(element);
-    const birthDeathString = getBDMString(personPopoverElement);
-    const bdSplit = birthDeathString.split(' ');
+    let bdSplit = '';
+    let birthYear = '';
+    let deathYear = '';
+    if (window.location.href.includes('search')) {
 
-    const birthYear = bdSplit[0].length === 4 ? bdSplit[0] : '';
-    const deathYear = bdSplit[2].length === 4 ? bdSplit[2] : '';
+        const personPopoverElement = getPersonPopover(element);
+        const birthDeathString = getBDMString(personPopoverElement);
+        bdSplit = birthDeathString.split(' ');
+
+        birthYear = bdSplit[0].length === 4 ? bdSplit[0] : '';
+        deathYear = bdSplit[2].length === 4 ? bdSplit[2] : '';
+    } else {
+        const spans = document.getElementsByClassName('normal');
+        const birthDeathString = spans[1].textContent.trim();
+        bdSplit = birthDeathString.split(' ');
+
+        birthYear = bdSplit[0].length === 4 ? bdSplit[0] : '';
+        deathYear = bdSplit[2].length === 4 ? bdSplit[2] : '';
+    }
 
     const http = 'https://www.findagrave.com/memorial/search?';
     const fn = `firstname=${firstName}`;
