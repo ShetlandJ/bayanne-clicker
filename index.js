@@ -35,7 +35,43 @@ const getNormalNameParts = (name) => {
     }
 }
 
-const searchFG = (phrase, withBirthAndDeathDate = false) => {
+const getHtmlElement = (linkUrl) => {
+    const anchors = document.querySelectorAll('a');
+
+    console.log(anchors);
+
+    let element = '';
+
+    Array.from(anchors).forEach(a => {
+        console.log(a.href, linkUrl);
+        if (a.href === linkUrl) {
+            element = a.parentElement;
+        }
+    })
+
+
+    return element;
+}
+
+const getPersonPopover = (element) => {
+    console.log(element);
+    const children = element.children;
+
+    let popover = null;
+    Array.from(children).forEach(c => {
+        if (c.classList.value === 'person-img') {
+            popover = c
+        }
+    })
+
+    return popover;
+}
+
+const getBDMString = (popover) => {
+    return popover.children[0].children[0].children.textContent.trim();
+}
+
+const searchFG = (phrase) => {
     const query = phrase.selectionText;
 
     const {
@@ -44,6 +80,11 @@ const searchFG = (phrase, withBirthAndDeathDate = false) => {
         surname
     } = getSurnameFirstNameParts(query);
 
+    const element = getHtmlElement(phrase.linkUrl);
+    const personPopoverElement = getPersonPopover(element);
+    const birthDeathString = getBDMSTring(personPopoverElement);
+
+    console.log(birthDeathString);
 
     const http = 'https://www.findagrave.com/memorial/search?';
     const fn = `firstname=${firstName}`;
@@ -60,5 +101,5 @@ const searchFG = (phrase, withBirthAndDeathDate = false) => {
 chrome.contextMenus.create({
     title: "Search Find A Grave",
     contexts: ["selection"],
-    onclick: searchFG
+    onclick: (a, b, c) => searchFG(a, b, c)
 });
