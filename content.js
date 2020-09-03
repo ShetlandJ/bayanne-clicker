@@ -76,7 +76,17 @@ const getPersonPopover = (element) => {
 }
 
 const getBDMString = (popover) => {
-    return popover.children[0].children[0].children[2].textContent.trim();
+    if (popover) {
+        if (popover.children[0]) {
+            if (popover.children[0].children[0]) {
+                if (popover.children[0].children[0].children[2]) {
+                    return popover.children[0].children[0].children[2].textContent.trim()
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 const handleClick = (phrase) => {
@@ -101,8 +111,6 @@ const handleClick = (phrase) => {
         surname = name.surname;
     }
 
-    console.log(firstName, middleNames, surname);
-
     let bdSplit = '';
     let birthYear = '';
     let deathYear = '';
@@ -111,10 +119,11 @@ const handleClick = (phrase) => {
         const element = getHtmlElement(phrase.linkUrl);
         const personPopoverElement = getPersonPopover(element);
         const birthDeathString = getBDMString(personPopoverElement);
-        bdSplit = birthDeathString.split(' ');
-
-        birthYear = bdSplit[0].length === 4 ? bdSplit[0] : '';
-        deathYear = bdSplit[2].length === 4 ? bdSplit[2] : '';
+        if (birthDeathString) {
+            bdSplit = birthDeathString.split(' ');
+            birthYear = bdSplit[0].length === 4 ? bdSplit[0] : '';
+            deathYear = bdSplit[2].length === 4 ? bdSplit[2] : '';
+        }
     } else {
         const spans = document.getElementsByClassName('normal');
         const birthDeathString = spans[1].textContent.trim();
@@ -135,6 +144,5 @@ const handleClick = (phrase) => {
 
     const url = `${http}${fn}&${mn}&${sn}&${by}&${dy}&${end}`
 
-    // chrome.tabs.create({ url });
     window.open(url, 'meaningfulName')
 };
