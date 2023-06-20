@@ -4,11 +4,22 @@
     "version": "0.1",
     "permissions": [
         "contextMenus",
-        "tabs"
+        "activeTab"
     ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "background": {
         "scripts": [
-            "index.js"
+            "background.js",
+            "test.js"
         ]
-    }
+    },
+    "content_scripts": [
+        {
+            "run_at": "document_end",
+            "matches": ["http://*/*", "https://*/*"],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
 }
