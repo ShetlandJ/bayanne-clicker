@@ -12,23 +12,19 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 const getSurnameFirstNameParts = (name) => {
-    const splitName = name.split(', ');
-
-    const surname = splitName[0];
-
-    const remainingNames = splitName[1].split(' ');
-
-    const firstName = remainingNames[0];
-
-    const middleNames = remainingNames.slice(1).join(' ');
-
+    const splitName = name.split(' ');
+  
+    const surname = splitName[splitName.length - 1];
+    const firstName = splitName[0];
+    const middleNames = splitName.slice(1, splitName.length - 1).join(' ');
+  
     return {
-        firstName,
-        middleNames,
-        surname,
-    }
-}
-
+      firstName,
+      middleNames,
+      surname,
+    };
+  };
+  
 const getNormalNameParts = (name) => {
     const splitName = name.split(' ');
 
