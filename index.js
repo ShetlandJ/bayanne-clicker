@@ -1,39 +1,16 @@
 const getSurnameFirstNameParts = (name) => {
-    const splitName = name.split(', ');
+  const splitName = name.split(' ');
 
-    const surname = splitName[0];
+  const surname = splitName[splitName.length - 1];
+  const firstName = splitName[0];
+  const middleNames = splitName.slice(1, splitName.length - 1).join(' ');
 
-    const remainingNames = splitName[1].split(' ');
-
-    const firstName = remainingNames[0];
-
-    const middleNames = remainingNames.slice(1).join(' ');
-
-    return {
-        firstName,
-        middleNames,
-        surname,
-    }
-}
-
-const getNormalNameParts = (name) => {
-    const splitName = query.split(', ');
-
-    const firstName = splitName[0];
-
-    splitName.shift();
-    splitName.pop();
-
-    const middleNames = splitName.join(' ');
-
-    const surname = splitName[-1];
-
-    return {
-        firstName,
-        middleNames,
-        surname,
-    }
-}
+  return {
+    firstName,
+    middleNames,
+    surname,
+  };
+};
 
 const searchFG = (phrase, withBirthAndDeathDate = false) => {
     const query = phrase.selectionText;
